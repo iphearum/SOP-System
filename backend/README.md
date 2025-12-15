@@ -1,35 +1,42 @@
-# Backend (Laravel) bootstrap
+# Backend (Laravel API)
 
-This folder is prepared for a Laravel API service. To generate the framework code when network access is available, run the bootstrap script below or manually invoke `composer create-project`.
+This folder now includes a Laravel 11–style API implementation for the SOP System. It ships with templates, documents, and approval endpoints aligned to a Cambodia-ready workflow.
 
-## Bootstrap
+## Getting started
+
+Because package downloads are blocked in this environment, install dependencies locally or within Docker once network access is available:
 
 ```bash
-make backend-bootstrap
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
 ```
 
-The command will:
-1. Run `composer create-project laravel/laravel .` inside `backend/`.
-2. Install dependencies.
-3. Generate `APP_KEY` and copy `.env.example` to `.env` if absent.
-
-## Local development
-
-After bootstrapping, start the stack:
+Then run the stack from the repository root:
 
 ```bash
 docker-compose up backend queue db mailhog
 ```
 
-The backend is exposed on `http://localhost:8000`.
+The API will be available at `http://localhost:8000/api/v1`.
+
+## API surface
+
+- `GET /api/v1/templates` — paginated templates
+- `POST /api/v1/templates` — create a template (expects `sections_schema` JSON)
+- `GET /api/v1/documents` — list documents with template + owner
+- `POST /api/v1/documents` — create a draft document from a template
+- `POST /api/v1/documents/{document}/submit` — move draft to review
+- `POST /api/v1/documents/{document}/approvals` — record an approval or rejection and update status
+- `POST /api/v1/documents/{document}/publish` — publish after approval
 
 ## Testing
 
-From the `backend/` directory after dependencies are installed:
+After running `composer install`, execute:
 
 ```bash
 php artisan test
-php artisan migrate --pretend
 ```
 
-If you encounter missing dependencies, ensure `composer install` has completed successfully.
+The included tests assume an in-memory SQLite database defined in `phpunit.xml`.

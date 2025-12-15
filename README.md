@@ -1,6 +1,6 @@
 # SOP System – Laravel + React + PostgreSQL blueprint
 
-This repository outlines a portable starter blueprint for building an SOP management system using **Laravel** for the backend, **React** for the frontend, and **PostgreSQL** for persistence.
+This repository outlines a portable starter blueprint for building an SOP management system using **Laravel** for the backend, **React** for the frontend, and **PostgreSQL** for persistence. The backend now includes a committed Laravel 11–style API for templates, documents, and approvals so you can run migrations and seeders as soon as Composer dependencies are available.
 
 ## Architecture overview
 - **Backend:** Laravel API (Sanctum or Passport for auth) with modular service classes and form request validation. Use Laravel Queues for notifications and long-running tasks.
