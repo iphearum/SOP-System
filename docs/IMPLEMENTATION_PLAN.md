@@ -1,12 +1,12 @@
 # Implementation Plan and Quality Gates
 
-This document outlines a phased approach to delivering the SOP System using Laravel (backend), React (frontend), and PostgreSQL. Each phase includes goals, deliverables, and verification steps (tests/checks). Revise or roll back any change that fails its quality gate before proceeding.
+This document outlines a phased approach to delivering the SOP System using Laravel (backend), Next.js (frontend), and PostgreSQL. Each phase includes goals, deliverables, and verification steps (tests/checks). Revise or roll back any change that fails its quality gate before proceeding.
 
 ## Phase 0 – Project bootstrap
 - **Goals:** Establish repos, environments, and CI baselines.
 - **Deliverables:**
   - Laravel API scaffold with Docker Compose (app, db, queue, mailhog optional).
-  - React (Vite) scaffold with linting/formatting.
+  - Next.js (App Router) scaffold with linting/formatting.
   - Shared `.env.example` files and Make/Composer/NPM scripts for common tasks.
 - **Quality gates:**
   - Backend: `php artisan test` (empty suite allowed), `php artisan migrate --pretend` to validate migrations once added.

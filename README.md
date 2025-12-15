@@ -1,10 +1,10 @@
 # SOP System – Laravel + React + PostgreSQL blueprint
 
-This repository outlines a portable starter blueprint for building an SOP management system using **Laravel** for the backend, **React** for the frontend, and **PostgreSQL** for persistence. The backend now includes a committed Laravel 11–style API for templates, documents, and approvals so you can run migrations and seeders as soon as Composer dependencies are available.
+This repository outlines a portable starter blueprint for building an SOP management system using **Laravel** for the backend, **Next.js (React)** for the frontend, and **PostgreSQL** for persistence. The backend includes a committed Laravel 11–style API for templates, documents, and approvals so you can run migrations and seeders as soon as Composer dependencies are available.
 
 ## Architecture overview
 - **Backend:** Laravel API (Sanctum or Passport for auth) with modular service classes and form request validation. Use Laravel Queues for notifications and long-running tasks.
-- **Frontend:** React (Vite) with component library (MUI/Chakra) and TanStack Query for data fetching + caching. Keep feature folders (e.g., `features/documents`, `features/templates`).
+- **Frontend:** Next.js (App Router) with TanStack Query for data fetching + caching. Keep feature folders (e.g., `components/templates`, `lib/api`).
 - **API style:** REST-first with pagination, filtering, and sorting. Consider JSON:API conventions for discoverability; add OpenAPI docs with Laravel Swagger or similar.
 - **Authentication & authorization:** JWT or Laravel Sanctum, with Role-Based Access Control (RBAC). Use policies for per-entity permissions.
 - **Storage:** PostgreSQL for relational data and versioning; S3-compatible storage for attachments via Laravel Filesystem.
@@ -37,7 +37,7 @@ This repository outlines a portable starter blueprint for building an SOP manage
 - `GET /api/documents?status=review&tag=...` – filter/paginate; include owner and template.
 - `GET /api/documents/{id}/versions` – list history; `GET /api/documents/{id}/diff/{v1}/{v2}` for comparisons.
 
-## Frontend considerations (React)
+## Frontend considerations (Next.js)
 - Use feature folders with hooks: `useDocuments()`, `useApproveStep()`, `useTemplateSchema()`, backed by TanStack Query.
 - Form generation from template schema (JSON-driven forms) with validation.
 - Rich text/structured editor for sections; show diff view for versions.
@@ -50,9 +50,9 @@ This repository outlines a portable starter blueprint for building an SOP manage
 - Capture audit events for create/update/approve/publish with hashed payloads.
 
 ## Dev environment (suggested)
-- **Setup:** `composer create-project laravel/laravel backend`, `npm create vite@latest frontend -- --template react`.
+- **Setup:** run `composer install` inside `backend/` (code is already present) and `npm install` in `frontend/` (Next.js App Router) once registry access is available.
 - **Local run:** Docker Compose with `app`, `db` (Postgres), `queue`, and optional `mailhog`.
-- **Testing:** Laravel Pest/PHPUnit for domain + workflow tests; Jest/RTL for React components; Playwright for e2e.
+- **Testing:** Laravel Pest/PHPUnit for domain + workflow tests; Vitest/RTL for Next components; Playwright for e2e.
 - **CI checks:** lint (PHP-CS-Fixer, ESLint/Prettier), tests, and migration validation.
 
 Use this blueprint as a starting point, adding concrete code, migrations, and CI as you build out the SOP system.
@@ -60,8 +60,8 @@ Use this blueprint as a starting point, adding concrete code, migrations, and CI
 ## Monorepo layout
 
 - `backend/` – Laravel API scaffold (generated via `composer create-project`) with Docker image for app and queue workers.
-- `frontend/` – React + Vite SPA scaffold with TanStack Query and Axios.
-- `docker-compose.yml` – services for backend, queue, Postgres, Mailhog, and the Vite dev server.
+- `frontend/` – Next.js App Router with TanStack Query and Axios.
+- `docker-compose.yml` – services for backend, queue, Postgres, Mailhog, and the Next dev server.
 - `Makefile` – helper targets to bootstrap backend/frontend when registry access is available.
 
 ## Quickstart
@@ -69,15 +69,15 @@ Use this blueprint as a starting point, adding concrete code, migrations, and CI
 Network access to PHP/Node registries is required for the bootstrap commands:
 
 ```bash
-make backend-bootstrap   # generates Laravel app and installs composer deps
-make frontend-bootstrap  # generates Vite app and installs npm deps
+make backend-bootstrap   # installs composer deps, copies env, generates key
+make frontend-bootstrap  # installs npm deps and copies env for Next
 cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+cp frontend/.env.example frontend/.env.local
 
 docker-compose up --build
 ```
 
-Backend will be available on `http://localhost:8000`, frontend on `http://localhost:5173`, and Mailhog UI on `http://localhost:8025`.
+Backend will be available on `http://localhost:8000`, frontend on `http://localhost:3000`, and Mailhog UI on `http://localhost:8025`.
 
 ## Delivery plan and quality gates
 
