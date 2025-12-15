@@ -50,7 +50,7 @@ This repository outlines a portable starter blueprint for building an SOP manage
 - Capture audit events for create/update/approve/publish with hashed payloads.
 
 ## Dev environment (suggested)
-- **Setup:** run `composer install` inside `backend/` (code is already present) and `npm install` in `frontend/` after bootstrapping Vite if you need additional dependencies.
+- **Setup:** `composer create-project laravel/laravel backend`, `npm create vite@latest frontend -- --template react`.
 - **Local run:** Docker Compose with `app`, `db` (Postgres), `queue`, and optional `mailhog`.
 - **Testing:** Laravel Pest/PHPUnit for domain + workflow tests; Jest/RTL for React components; Playwright for e2e.
 - **CI checks:** lint (PHP-CS-Fixer, ESLint/Prettier), tests, and migration validation.
